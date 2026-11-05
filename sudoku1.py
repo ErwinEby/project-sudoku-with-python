@@ -27,6 +27,11 @@ class SudokuApp(Application):
     self.program_name = "sudoku"
     self.version = "1.0"
 
+  def print_model(self, model, printer) -> None:
+    symbols = sorted(model.symbols(shown=True))
+    print(" ".join(str(symbol) for symbol in symbols))
+    sys.stdout.flush()
+
   def main(self, ctl, files):
     ctl.add("base", [], SUDOKU_ENCODING)
     for path in files:
