@@ -7,9 +7,17 @@ class Sudoku:
         self.sudoku = sudoku
 
     def __str__(self) -> str:
-        s = ""
-        # YOUR CODE HERE
-        return s
+        rows = []
+        for row in range(1, 10):
+            blocks = [
+                " ".join(str(self.sudoku[(row, column)]) for column in range(start, start + 3))
+                for start in (1, 4, 7)
+            ]
+            rows.append("  ".join(blocks))
+        return "\n\n".join(
+            "\n".join(rows[start : start + 3])
+            for start in (0, 3, 6)
+        )
 
     @classmethod
     def from_str(cls, s: str) -> "Sudoku":
@@ -20,5 +28,7 @@ class Sudoku:
     @classmethod
     def from_model(cls, model: clingo.solving.Model) -> "Sudoku":
         sudoku = {}
-        # YOUR CODE HERE
+        for symbol in model.symbols(shown=True):
+            row, column, value = (argument.number for argument in symbol.arguments)
+            sudoku[(row, column)] = value
         return cls(sudoku)
